@@ -9,6 +9,14 @@ def create_app(test_config=None):
 
     @app.route('/test', methods=['GET'])
     def testGet():
-        return "OK", 200
+        return {
+            "id": 1,
+            "name": "Beej",
+            "number": 123456789,
+            "street_addr": "123 Something Street",
+            "city": "SomeCity",
+            "state": "State City",
+            "zip": 11111 
+        }, 200
 
     return app
