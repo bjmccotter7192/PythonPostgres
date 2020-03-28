@@ -3,6 +3,8 @@ import json
 import db
 from flask import jsonify, request
 from flask_cors import CORS
+import plotly.graph_objects as go
+import plotly.io as pio
 
 def create_app(test_config=None):
     app = flask.Flask(__name__)
@@ -28,7 +30,7 @@ def create_app(test_config=None):
         query_results = cur.fetchall()
 
         rows = []
-        for row in query_results:
+        for i in query_results:
             rows.append({
                 "first_name": i[0],
                 "last_name": i[1],
@@ -45,5 +47,29 @@ def create_app(test_config=None):
         conn.close()
 
         return jsonify(rows)
+
+    @app.route('/getGraph', methods=['GET'])
+    def getGraph():
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        fig = go.Figure()
+        fig.add_trace(go.Bar(
+            x=months,
+            y=[20, 14, 25, 16, 18, 22, 19, 15, 12, 16, 14, 17],
+            name='Primary Product',
+            marker_color='indianred'
+        ))
+        fig.add_trace(go.Bar(
+            x=months,
+            y=[19, 14, 22, 14, 16, 19, 15, 14, 10, 12, 12, 16],
+            name='Secondary Product',
+            marker_color='lightsalmon'
+        ))
+        # Here we modify the tickangle of the xaxis, resulting in rotated labels.
+        fig.update_layout(barmode='group', xaxis_tickangle=-45)
+        # fig.show()
+        pio.write_html(fig, file='customer.html', auto_open=False)
+
+        return "OK", 200
 
     return app
