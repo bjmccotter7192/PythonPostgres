@@ -68,7 +68,7 @@ def create_app(test_config=None):
         # Here we modify the tickangle of the xaxis, resulting in rotated labels.
         fig.update_layout(barmode='group', xaxis_tickangle=-45)
         # fig.show()
-        pio.write_html(fig, file='customer.html', auto_open=False)
+        pio.write_html(fig, file='./html/customer.html', auto_open=False)
 
         return "OK", 200
 
