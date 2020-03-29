@@ -50,6 +50,8 @@ def create_app(test_config=None):
 
     @app.route('/getGraph', methods=['GET'])
     def getGraph():
+
+        console.log("INSIDE GET GRAPH")
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         fig = go.Figure()
@@ -69,7 +71,5 @@ def create_app(test_config=None):
         fig.update_layout(barmode='group', xaxis_tickangle=-45)
         # fig.show()
         pio.write_html(fig, file='./html/customer.html', auto_open=False)
-
-        return "OK", 200
 
     return app
