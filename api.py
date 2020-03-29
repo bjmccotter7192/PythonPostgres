@@ -51,7 +51,7 @@ def create_app(test_config=None):
     @app.route('/getGraph', methods=['GET'])
     def getGraph():
 
-        console.log("INSIDE GET GRAPH")
+        print("INSIDE GET GRAPH")
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         fig = go.Figure()
