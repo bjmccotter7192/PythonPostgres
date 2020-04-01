@@ -32,14 +32,15 @@ def create_app(test_config=None):
         rows = []
         for i in query_results:
             rows.append({
-                "first_name": i[0],
-                "last_name": i[1],
-                "mi_initial": i[2],
-                "number1": i[3],
-                "number2": i[4],
-                "email_address": i[5],
-                "realtor": i[6],
-                "referred_by": i[7]
+                "client_id": i[0],
+                "first_name": i[1],
+                "last_name": i[2],
+                "mi_initial": i[3],
+                "number1": i[4],
+                "number2": i[5],
+                "email_address": i[6],
+                "realtor": i[7],
+                "referred_by": i[8]
             })
 
         print(rows)
@@ -50,7 +51,6 @@ def create_app(test_config=None):
 
     @app.route('/getGraph', methods=['GET'])
     def getGraph():
-
         print("INSIDE GET GRAPH")
         returnData = []
         
@@ -64,5 +64,23 @@ def create_app(test_config=None):
             })
 
         return jsonify(returnData)
+
+    @app.route('/addClient', methods=['GET'])
+    def addClient():
+
+        try:
+            conn = db.connectToDb()
+            cur = conn.cursor()
+            cur.execute("INSERT INTO clients (first_name, lastname, mi_initial) VALUES (%s, %s, %s)", ("yabba", "dadda", "do",))
+
+            conn.commit()
+            cur.close() 
+            conn.close()
+
+            return jsonify(returnData)
+        except Exception as ex:
+            return {
+                "Failure": str(ex)
+            }
 
     return app
