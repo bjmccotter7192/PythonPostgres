@@ -77,6 +77,8 @@ def create_app(test_config=None):
             cur.close() 
             conn.close()
 
+            print("INSIDE FAILED ADD CLIENT")
+
             return jsonify(returnData)
         except Exception as ex:
             return {
