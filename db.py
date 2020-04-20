@@ -1,5 +1,6 @@
 import psycopg2
 import os
+import json
 
 def connectToDb():
     # conn = psycopg2.connect(host=os.environ['DB_HOST'], port = 5432, 
