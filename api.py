@@ -1,6 +1,7 @@
 import flask
 import json
 import db
+from pprint import pprint
 from flask import jsonify, request
 from flask_cors import CORS
 import plotly.graph_objects as go
@@ -81,8 +82,54 @@ def create_app(test_config=None):
 
             return jsonify(returnData)
         except Exception as ex:
-            return {
-                "Failure": str(ex)
-            }
+            print("Failed to insert client into db")
+
+    @app.route('/uploadFile', methods=['POST'])
+    def uploadFile():
+        requestData = json.loads(request.data)
+
+        # try:
+        conn = db.connectToDb()
+        cur = conn.cursor()
+        cur.execute("INSERT INTO file_uploads (file_name, file_path, file_data) VALUES (%s, %s, %s)", 
+        (requestData.get('name'), requestData.get('file'), requestData.get('fileSource'),))
+
+        conn.commit()
+        cur.close() 
+        conn.close()
+
+        return {
+            "Success": "WE DID IT"
+        }
+
+    @app.route('/getFiles', methods=['GET'])
+    def getFiles():
+        # try:
+        conn = db.connectToDb()
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM file_uploads;")
+
+        query_results = cur.fetchall()
+
+        rows = []
+        for i in query_results:
+            rows.append({
+                "file_id": i[3],
+                "file_name": i[0],
+                "file_data": str(bytes(i[1]))
+            })
+
+        print(rows)
+        cur.close() 
+        conn.close()
+
+        return jsonify(rows)
+
+        # except Exception as ex:
+        #     print("Failed to insert file into db")
+
+        #     return "FAILED"
+
+        
 
     return app
