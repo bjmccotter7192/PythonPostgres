@@ -105,6 +105,7 @@ def create_app(test_config=None):
     @app.route('/getFiles', methods=['GET'])
     def getFiles():
         # try:
+        print("Inside the getFiles Endpoint")
         conn = db.connectToDb()
         cur = conn.cursor()
         cur.execute("SELECT * FROM file_uploads;")
